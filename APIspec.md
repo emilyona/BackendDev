@@ -32,9 +32,7 @@ Response
     }
 
 
-```
-Example.png
-```
+
 ## Create a patient
 ```
 POST /api/patients/
