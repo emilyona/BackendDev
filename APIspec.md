@@ -24,7 +24,7 @@ Response
             {
                 "id": 2,
                 "name": "Sally",
-                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
+                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
             },
             ...
@@ -122,7 +122,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>]
         }
     }
 ## Assign a patient to a nurse
@@ -153,7 +153,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>]
         }
     }
 
