@@ -19,7 +19,7 @@ Response
                 "id": 1,
                 "name": "Bonnie",
                 "age": 34,
-                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
+                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
                 "last_cycle_date": <USER INPUT>
             },
