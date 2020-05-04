@@ -19,7 +19,7 @@ Response
                 "id": 1,
                 "name": "Bonnie",
                 "age": 34,
-                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
+                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
                 "last_cycle_date": <USER INPUT>
             },
@@ -44,7 +44,8 @@ POST /api/patients/
 Request
 
     {
-        "name": <USER INPUT>
+        "name": <USER INPUT>,
+        "age": <USER INPUT>
     }
     
 Response
@@ -54,8 +55,10 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse": [],
-                "hormones": []
+                "age": <USER INPUT>
+                "nurse": None,
+                "hormones": [],
+                "last_cycle_date": None
         }
     }
 
@@ -70,8 +73,10 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
+                "age": <USER INPUT>,
                 "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "last_cycle_date": <USER INPUT>
         }
     }
 
@@ -87,8 +92,10 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
+                "age": <USER INPUT>,
                 "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "last_cycle_date": <USER INPUT>
         }
     }
    
@@ -114,6 +121,19 @@ Response
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
                 "last_cycle_date": <USER INPUT>
         }
+    }
+    
+## Check cycle
+```
+GET /api/patients/{id}/cycle/
+```
+
+    
+Response
+
+    {
+        "success": true,
+        "data": "low", "medium" or "high"
     }
 
 ## Get all nurses
@@ -180,8 +200,7 @@ Response
         "success": true,
         "data": {
                 "id": <ID>,
-                "name": <USER INPUT>,
-                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>]
+                "name": <USER INPUT>
         }
     }
 
