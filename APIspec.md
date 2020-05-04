@@ -19,7 +19,7 @@ Response
                 "id": 1,
                 "name": "Bonnie",
                 "age": 34,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
+                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
                 "last_cycle_date": <USER INPUT>
             },
@@ -54,7 +54,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse": NULL,
+                "nurse": [],
                 "hormones": []
         }
     }
@@ -70,7 +70,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
+                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
         }
     }
@@ -87,8 +87,32 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
+                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+        }
+    }
+   
+## Update cycle
+```
+POST /api/patients/{id}/cycle/
+```
+Request
+
+    {
+        "last_cycle_date": <USER INPUT>
+    }
+    
+Response
+
+    {
+        "success": true,
+        "data": {
+                "id": <ID>,
+                "name": <USER INPUT>,
+                "age": <USER INPUT>,
+                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
+                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "last_cycle_date": <USER INPUT>
         }
     }
 
