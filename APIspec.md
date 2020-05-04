@@ -54,7 +54,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse": [],
+                "nurse": NULL,
                 "hormones": []
         }
     }
@@ -70,7 +70,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
+                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
         }
     }
@@ -87,7 +87,7 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "nurse": [ <SERIALIZED NURSE WITHOUT PATIENT FIELD>],
+                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
                 "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
         }
     }
