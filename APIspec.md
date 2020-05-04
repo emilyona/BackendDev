@@ -19,16 +19,14 @@ Response
                 "id": 1,
                 "name": "Bonnie",
                 "age": 34,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurses": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
             },
             {
                 "id": 2,
                 "name": "Sally",
                 "age": 4,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurses": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
             },
             ...
@@ -56,8 +54,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>
-                "nurse": None,
-                "hormones": [],
+                "nurses": [],
                 "last_cycle_date": None
         }
     }
@@ -74,8 +71,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "nurses":  [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -93,8 +89,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "nurses":  [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -117,8 +112,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurse": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -189,37 +183,4 @@ Response
         "success": true,
         "data": <SERIALIZED PATIENT>
     }    
-
-## Get all hormones
-```
-GET /api/hormones/
-```
-Response
-
-    {
-        "success": true,
-        "data": {
-                "id": <ID>,
-                "name": <USER INPUT>
-        }
-    }
-
-## Assign a hormone to a patient
-```
-POST /api/patients/{id}/addhormone/
-```
-Request
-
-    {
-        "hormone_id": <USER INPUT>
-    }
-
-Response
-
-    {
-        "success": true,
-        "data": <SERIALIZED PATIENT>
-    }   
-
-
 
