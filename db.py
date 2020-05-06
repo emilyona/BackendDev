@@ -7,101 +7,121 @@ db = SQLAlchemy()
 
 # many to many
 
-instructor_asso = db.Table("instructor_asso", db.Model.metadata,
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-    db.Column("course_id", db.Integer, db.ForeignKey("courses.id"))
+association = db.Table("association", db.Model.metadata,
+    db.Column("patient_id", db.Integer, db.ForeignKey("patients.id")),
+    db.Column("nurse_id", db.Integer, db.ForeignKey("nurses.id"))
 )
 
-student_asso = db.Table("student_asso", db.Model.metadata,
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-    db.Column("course_id", db.Integer, db.ForeignKey("courses.id"))
-)
 
-class Course(db.Model):
-    __tablename__ = 'courses'
+class Patient(db.Model):
+    __tablename__ = 'patients'
     id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
-    assignments = db.relationship("Assignment", cascade="delete")
-    instructors = db.relationship('User', secondary = instructor_asso, back_populates='courses_inst')
-    students = db.relationship('User', secondary = student_asso, back_populates='courses_stud')
+    age = db.Column(db.Integer, nullable=False)
+    nurses = db.relationship('Nurse', secondary = association, back_populates='patients')
+    last_cycle_date = db.Column(db.String)
 
     def __init__(self, **kwargs):
-        self.code = kwargs.get('code','')
         self.name = kwargs.get('name','')
-        self.assignments = []
-        self.instructors = []
-        self.students = []
+        self.age = kwargs.get('age','')
+        self.nurses = []
+        self.last_cycle_date = None
 
     def serialize(self):
         return {
             "id": self.id,
-            "code": self.code,
             "name": self.name,
-            "assignments": [a.serialize() for a in self.assignments],
-            "instructors": [i.serialize() for i in self.instructors],
-            "students": [s.serialize() for s in self.students]
+            "age": self.age,
+            "nurses": [n.serialized() for n in self.nurses],
+            "last_cycle_date": self.last_cycle_date
         }
 
     def serialized(self):
         return {
             "id": self.id,
-            "code": self.code,
+            "name": self.name,
+            "age": self.age,
+            "last_cycle_date": self.last_cycle_date
+        }
+    
+    def update_cycle(self,id,cycle_time):
+        self.conn.execute("""
+            UPDATE patients
+            SET last_cycle_date = ?
+            WHERE id = ?;
+        """, (cycle_time, id,))
+        self.conn.commit()
+
+class Nurse(db.Model):
+    __tablename__ = 'nurses'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    patients = db.relationship('Patient', secondary = association, back_populates = 'nurses')
+    doctor = db.Column(db.Integer, db.ForeignKey('doctors.id'))
+
+    def __init__(self, **kwargs):
+        self.name = kwargs.get('name','')
+        self.patients = []
+        self.doctor = ""
+
+    def serialize(self):
+        patients = []
+        for p in self.patients:
+            patients.append(p.serialized())
+
+        doctorob = Doctor.query.filter_by(id=self.doctor).first()
+        if doctorob is None:
+            serialized_doctor = None
+        else:
+            serialized_doctor = doctorob.serialized()
+
+        return {
+            "id": self.id,
+            "name": self.name,
+            "patients": patients,
+            "doctor": serialized_doctor
+        }
+
+    def serialized(self):
+        return {
+            "id": self.id,
             "name": self.name
         }
+    
+    def serialized_doc(self):
+        patients = []
+        for p in self.patients:
+            patients.append(p.serialized())
+        
+        return {
+            "id": self.id,
+            "name": self.name,
+            "patients": patients
+        }
 
-class User(db.Model):
-    __tablename__ = 'user'
+class Doctor(db.Model):
+    __tablename__ = 'doctors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    netid = db.Column(db.String, nullable=False)
-    courses_stud = db.relationship('Course', secondary = student_asso, back_populates = 'students')
-    courses_inst = db.relationship('Course', secondary = instructor_asso, back_populates='instructors')
+    nurses = db.relationship('Nurse')
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name','')
-        self.netid = kwargs.get('netid','')
-        self.courses_stud = []
-        self.courses_inst = []
+        self.nurses = []
 
     def serialize(self):
+        nurses = []
+        for n in self.nurses:
+            nurses.append(n.serialized_doc())
+
         return {
             "id": self.id,
             "name": self.name,
-            "netid": self.netid,
+            "nurses": nurses
         }
 
     def serialized(self):
-        courses = []
-        for c in self.courses_inst:
-            courses.append(c.serialize())
-        for i in self.courses_stud:
-            courses.append(i.serialize())
-
         return {
             "id": self.id,
-            "name": self.name,
-            "netid": self.netid,
-            "courses": courses
-        }
-
-class Assignment(db.Model):
-    __tablename__ = 'assignments'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    due_date = db.Column(db.Integer, nullable=False)
-    course = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
-
-    def __init__(self, **kwargs):
-        self.title = kwargs.get('title','')
-        self.due_date = kwargs.get('due_date','')
-        self.course = kwargs.get('course', '')
-
-    def serialize(self):
-        course_ser = dao.get_course_by_id(self.course).serialized()
-        return {
-            "id": self.id,
-            "title": self.title,
-            "due_date": self.due_date,
-            "course": course_ser
+            "name": self.name
         }

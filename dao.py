@@ -1,81 +1,99 @@
-from db import db, Course, User, Assignment
+from db import db, Patient, Nurse, Doctor
 
 # your methods here
-def get_all_users():
-    return [u.serialize() for u in User.query.all()]
+def get_all_patients():
+    return [p.serialize() for p in Patient.query.all()]
 
-def create_user(name, netid):
-    new_user = User(
+def create_patient(name, age):
+    new_patient = Patient(
         name = name,
-        netid = netid
+        age = age
     )
-
-    db.session.add(new_user)
+    db.session.add(new_patient)
     db.session.commit()
-    return new_user.serialize()
+    return new_patient.serialize()
 
-def get_user_by_id(user_id):
-    user=User.query.filter_by(id=user_id).first()
-    if user is None:
+def get_patient_by_id(patient_id):
+    patient=Patient.query.filter_by(id=patient_id).first()
+    if patient is None:
         return None
-    return user
+    return patient.serialize()
+
+def delete_patient_by_id(patient_id):
+    patient = Patient.query.filter_by(id=patient_id).first()
+    if patient is None:
+        return None
+    db.session.delete(patient)
+    db.session.commit()
+    return patient.serialize()
+
+def update_cycle_by_id(patient_id, cycle_time):
+    patient = Patient.query.filter_by(id=patient_id).first()
+    if patient is None:
+        return None
+    ##more code changing the time stamp
+    db.patient.update_cycle(patient_id, cycle_time)
+    ##
+    db.session.commit()
+    return patient.serialize()
 
 
-#COURSES
+#nurses
 
-def get_all_courses():
-    return [c.serialize() for c in Course.query.all()]
+def get_all_nurses():
+    return [n.serialize() for n in Nurse.query.all()]
 
-def create_course(code, name):
-    new_course = Course(
-        code = code,
+def create_nurse(name):
+    new_nurse = Nurse(
         name = name
     )
 
-    db.session.add(new_course)
+    db.session.add(new_nurse)
     db.session.commit()
-    return new_course.serialize()
+    return new_nurse.serialize()
 
-def get_course_by_id(course_id):
-    course=Course.query.filter_by(id=course_id).first()
-    if course is None:
+def get_nurse_by_id(nurse_id):
+    nurse=Nurse.query.filter_by(id=nurse_id).first()
+    if nurse is None:
         return None
-    return course
+    return nurse.serialize()
 
-def delete_course_by_id(course_id):
-    course=Course.query.filter_by(id=course_id).first()
-    if course is None:
+def delete_nurse_by_id(nurse_id):
+    nurse=Nurse.query.filter_by(id=nurse_id).first()
+    if nurse is None:
         return None
-    db.session.delete(course)
+    db.session.delete(nurse)
     db.session.commit()
-    return course.serialize()
+    return nurse.serialize()
 
-def add_user(course_id, user_id, type):
-    course = get_course_by_id(course_id)
-    user = get_user_by_id(user_id)
-    if course is None or user is None:
+def add_patient(nurse_id, patient_id):
+    nurse = Nurse.query.filter_by(id=nurse_id).first()
+    patient = Patient.query.filter_by(id=patient_id).first()
+    if nurse is None or patient is None:
         return None
-    if type == "student":
-        course.students.append(user)
-        user.courses_stud.append(course)
-        db.session.commit()
-        return course.serialize()
-    if type == 'instructor':
-        course.instructors.append(user)
-        user.courses_inst.append(course)
-        db.session.commit()
-        return course.serialize()
-    return None
+    nurse.patients.append(patient)
 
-def add_assignment(course_id,title,due_date):
-    new_assignment = Assignment(
-        title = title,
-        due_date = due_date,
-        course=course_id
+    db.session.commit()
+    return patient.serialize()
+
+def get_all_doctors():
+    return [d.serialize() for d in Doctor.query.all()]
+
+def create_doctor(name):
+    new_doctor = Doctor(
+        name = name
     )
-    course = get_course_by_id(course_id)
-    if course is None:
-        return None
-    course.assignments.append(new_assignment)
+    db.session.add(new_doctor)
     db.session.commit()
-    return new_assignment
+    return new_doctor.serialize()
+
+
+def add_nurse(doctor_id, nurse_id):
+    nurse = Nurse.query.filter_by(id=nurse_id).first()
+    doctor = Doctor.query.filter_by(id=doctor_id).first()
+    if nurse is None or doctor is None:
+        return None
+    doctor.nurses.append(nurse)
+
+    db.session.commit()
+    return nurse.serialize()
