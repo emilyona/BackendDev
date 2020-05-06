@@ -184,3 +184,20 @@ Response
         "data": <SERIALIZED PATIENT>
     }    
 
+## Assign a nurse to a doctor
+```
+POST /api/nurses/{id}/adddoctor/
+```
+Request
+
+    {
+        "doctor_id": <USER INPUT>
+    }
+
+Response
+
+    {
+        "success": true,
+        "data": <SERIALIZED NURSE>
+    }    
+
