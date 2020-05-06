@@ -19,16 +19,14 @@ Response
                 "id": 1,
                 "name": "Bonnie",
                 "age": 34,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurses": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
             },
             {
                 "id": 2,
                 "name": "Sally",
                 "age": 4,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurses": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
             },
             ...
@@ -56,8 +54,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>
-                "nurse": None,
-                "hormones": [],
+                "nurses": [],
                 "last_cycle_date": None
         }
     }
@@ -74,8 +71,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "nurses":  [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -93,8 +89,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse":  <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ]
+                "nurses":  [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -117,8 +112,7 @@ Response
                 "id": <ID>,
                 "name": <USER INPUT>,
                 "age": <USER INPUT>,
-                "nurse": <SERIALIZED NURSE WITHOUT PATIENT FIELD>,
-                "hormones": [ <SERIALIZED HORMONE WITHOUT PATIENT FIELD>, ... ],
+                "nurse": [<SERIALIZED NURSE WITHOUT PATIENT FIELD>],
                 "last_cycle_date": <USER INPUT>
         }
     }
@@ -149,14 +143,37 @@ Response
                 "id": 1,
                 "name": "Franny",
                 "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
             },
             {
                 "id": 2,
                 "name": "Bob",
                 "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
             },
             ...
         ]
+    }
+
+## Create a specific nurses
+```
+POST /api/nurses/
+```
+Request
+
+    {
+        "name": <USER INPUT>
+    }
+Response
+
+    {
+        "success": true,
+        "data": {
+                "id": <ID>,
+                "name": <USER INPUT>,
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
+        }
     }
 
 ## Get a specific nurses
@@ -170,7 +187,8 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>]
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
         }
     }
 ## Assign a patient to a nurse
@@ -189,37 +207,66 @@ Response
         "success": true,
         "data": <SERIALIZED PATIENT>
     }    
+    
+## Get all doctors
+```
+GET /api/doctors/
+```
+Response
 
-## Get all hormones
+    {
+        "success": true,
+        "data": [
+            {
+                "id": 1,
+                "name": "Franny",
+                "nurses": [ <SERIALIZED NURSE WITHOUT DOCTOR FIELD,...>]
+            },
+            {
+                "id": 2,
+                "name": "Bob",
+                "nurses": [ <SERIALIZED NURSE WITHOUT DOCTOR FIELD,...>]
+            },
+            ...
+        ]
+    }
+
+## Create a doctor
 ```
-GET /api/hormones/
+POST /api/doctors/
 ```
+Request
+
+    {
+        "name": <USER INPUT>
+    }
+    
 Response
 
     {
         "success": true,
         "data": {
                 "id": <ID>,
-                "name": <USER INPUT>
+                "name": <USER INPUT>,
+                "nurses": []
         }
     }
 
-## Assign a hormone to a patient
+
+## Assign a nurse to a doctor
 ```
-POST /api/patients/{id}/addhormone/
+POST /api/nurses/{id}/adddoctor/
 ```
 Request
 
     {
-        "hormone_id": <USER INPUT>
+        "doctor_id": <USER INPUT>
     }
 
 Response
 
     {
         "success": true,
-        "data": <SERIALIZED PATIENT>
-    }   
-
-
+        "data": <SERIALIZED NURSE>
+    }    
 
