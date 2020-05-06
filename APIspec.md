@@ -231,6 +231,28 @@ Response
         ]
     }
 
+## Create a doctor
+```
+POST /api/doctors/
+```
+Request
+
+    {
+        "name": <USER INPUT>
+    }
+    
+Response
+
+    {
+        "success": true,
+        "data": {
+                "id": <ID>,
+                "name": <USER INPUT>,
+                "nurses": []
+        }
+    }
+
+
 ## Assign a nurse to a doctor
 ```
 POST /api/nurses/{id}/adddoctor/
