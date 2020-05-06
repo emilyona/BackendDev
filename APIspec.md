@@ -143,14 +143,37 @@ Response
                 "id": 1,
                 "name": "Franny",
                 "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
             },
             {
                 "id": 2,
                 "name": "Bob",
                 "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
             },
             ...
         ]
+    }
+
+## Create a specific nurses
+```
+POST /api/nurses/
+```
+Request
+
+    {
+        "name": <USER INPUT>
+    }
+Response
+
+    {
+        "success": true,
+        "data": {
+                "id": <ID>,
+                "name": <USER INPUT>,
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
+        }
     }
 
 ## Get a specific nurses
@@ -164,7 +187,8 @@ Response
         "data": {
                 "id": <ID>,
                 "name": <USER INPUT>,
-                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>]
+                "patients": [ <SERIALIZED PATIENT WITHOUT NURSE FIELD,...>],
+                "doctor": ""
         }
     }
 ## Assign a patient to a nurse
@@ -183,6 +207,29 @@ Response
         "success": true,
         "data": <SERIALIZED PATIENT>
     }    
+    
+## Get all doctors
+```
+GET /api/doctors/
+```
+Response
+
+    {
+        "success": true,
+        "data": [
+            {
+                "id": 1,
+                "name": "Franny",
+                "nurses": [ <SERIALIZED NURSE WITHOUT DOCTOR FIELD,...>]
+            },
+            {
+                "id": 2,
+                "name": "Bob",
+                "nurses": [ <SERIALIZED NURSE WITHOUT DOCTOR FIELD,...>]
+            },
+            ...
+        ]
+    }
 
 ## Assign a nurse to a doctor
 ```
