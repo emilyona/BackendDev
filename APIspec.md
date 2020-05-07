@@ -117,18 +117,6 @@ Response
         }
     }
     
-## Check cycle
-```
-GET /api/patients/{id}/cycle/
-```
-
-    
-Response
-
-    {
-        "success": true,
-        "data": "low", "medium" or "high"
-    }
 
 ## Get all nurses
 ```
@@ -155,7 +143,7 @@ Response
         ]
     }
 
-## Create a specific nurses
+## Create a specific nurse
 ```
 POST /api/nurses/
 ```
@@ -176,7 +164,7 @@ Response
         }
     }
 
-## Get a specific nurses
+## Get a specific nurse
 ```
 GET /api/nurses/{id}/
 ```
