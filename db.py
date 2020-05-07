@@ -12,6 +12,14 @@ association = db.Table("association", db.Model.metadata,
     db.Column("nurse_id", db.Integer, db.ForeignKey("nurses.id"))
 )
 
+def update_cycle(self,id,cycle_time):
+    self.conn.execute("""
+        UPDATE patients
+        SET last_cycle_date = ?
+        WHERE id = ?;
+    """, (cycle_time, id,))
+    self.conn.commit()
+
 
 class Patient(db.Model):
     __tablename__ = 'patients'
@@ -44,13 +52,7 @@ class Patient(db.Model):
             "last_cycle_date": self.last_cycle_date
         }
     
-    def update_cycle(self,id,cycle_time):
-        self.conn.execute("""
-            UPDATE patients
-            SET last_cycle_date = ?
-            WHERE id = ?;
-        """, (cycle_time, id,))
-        self.conn.commit()
+
 
 class Nurse(db.Model):
     __tablename__ = 'nurses'

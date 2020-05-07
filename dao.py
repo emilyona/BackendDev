@@ -32,7 +32,8 @@ def update_cycle_by_id(patient_id, cycle_time):
     if patient is None:
         return None
     ##more code changing the time stamp
-    db.patient.update_cycle(patient_id, cycle_time)
+    #update(dict(last_cycle_date=cycle_time))
+    patient.last_cycle_date = cycle_time
     ##
     db.session.commit()
     return patient.serialize()
@@ -75,6 +76,8 @@ def add_patient(nurse_id, patient_id):
 
     db.session.commit()
     return patient.serialize()
+
+#doctors
 
 def get_all_doctors():
     return [d.serialize() for d in Doctor.query.all()]
