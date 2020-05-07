@@ -1,4 +1,5 @@
 from db import db, Patient, Nurse, Doctor
+from datetime import datetime
 
 # your methods here
 def get_all_patients():
@@ -37,6 +38,14 @@ def update_cycle_by_id(patient_id, cycle_time):
     ##
     db.session.commit()
     return patient.serialize()
+
+def days_between(date, date2):
+    return abs((date2 - date).days)
+
+def get_ovulation(len, cycleDays, startDate):
+    return 0
+
+
 
 
 #nurses
