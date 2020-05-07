@@ -143,7 +143,7 @@ Response
         ]
     }
 
-## Create a specific nurses
+## Create a specific nurse
 ```
 POST /api/nurses/
 ```
@@ -164,7 +164,7 @@ Response
         }
     }
 
-## Get a specific nurses
+## Get a specific nurse
 ```
 GET /api/nurses/{id}/
 ```
