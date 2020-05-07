@@ -32,21 +32,22 @@ def update_cycle_by_id(patient_id, cycle_time):
     patient = Patient.query.filter_by(id=patient_id).first()
     if patient is None:
         return None
-    ##more code changing the time stamp
-    #update(dict(last_cycle_date=cycle_time))
     patient.last_cycle_date = cycle_time
-    ##
     db.session.commit()
     return patient.serialize()
 
-def days_between(date, date2):
-    return abs((date2 - date).days)
+def days_between(start, today):
+    if abs((today - start).days)>=28:
+        days_between(start+28,today)
+    if abs((today - start).days) < 0:
+        return None
+    return abs((today - start).days)
 
-def get_ovulation(len, cycleDays, startDate):
-    return 0
-
-
-
+def get_ovulation(startDate):
+    days = days_between(startDate, datetime.today().date())
+    if days <=16 and days >=12:
+        return True
+    return False
 
 #nurses
 
