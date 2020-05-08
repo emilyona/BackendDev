@@ -1,8 +1,8 @@
 from flask import Flask, request
 import dao
 import json
-from db import db
 from datetime import datetime
+from db import db, Patient
 
 app = Flask(__name__)
 db_filename = "cms.db"
@@ -52,21 +52,25 @@ def delete_patient_by_id(patient_id):
         return success_response(patient)
     return failure_response("that patient does not exist!")
 
-@app.route("/api/patients/<int:patient_id>/cycle/", methods=['POST'])
-def get_btwn_cycle(patient_id):
-    body = json.loads(request.data)
-    last_cycle = body.get('last_cycle_date')
-    if dao.get_patient_by_id(patient_id) is None:
+@app.route("/api/patients/<int:patient_id>/cycle/", methods=['GET'])
+def ovulating(patient_id):
+    patient = Patient.query.filter_by(id=patient_id).first()
+    date = patient.last_cycle_date
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%q")
+    print(datetime.strptime(date, '%Y-%m-%d').date())
+    if dao.get_patient_by_id(patient_id) is None or date is None:
         return failure_response("Patient not found!")
-    return str(dao.days_between(datetime.today().date(), datetime.strptime(last_cycle, '%m-%d-%Y').date()))
+    ov = dao.get_ovulation(date)
+    if ov is True:
+        return success_response("you are ovulating!")
+    return success_response("you are not ovulating!")
 
-@app.route("/api/patients/<int:patient_id>/cycles/", methods=['POST'])
+
+@app.route("/api/patients/<int:patient_id>/cycle/", methods=['POST'])
 def update_cycle(patient_id):
     body = json.loads(request.data)
-    patient = dao.update_cycle_by_id(
-        patient_id = patient_id,
-        cycle_time = body.get('last_cycle_date')
-        )
+    last_cycle = body.get('last_cycle_date')
+    patient = dao.update_cycle_by_id(patient_id,datetime.strptime(last_cycle, '%m-%d-%Y').date())
     if patient is None:
         return failure_response("Patient not found!")
     return success_response(patient)
