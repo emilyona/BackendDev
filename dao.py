@@ -1,5 +1,6 @@
 from db import db, Patient, Nurse, Doctor
 from datetime import datetime
+from datetime import timedelta
 
 # your methods here
 def get_all_patients():
@@ -38,15 +39,14 @@ def update_cycle_by_id(patient_id, cycle_time):
 
 def days_between(start, today):
     if (today - start).days>=28:
-        days_between(start+28,today)
+        print("***************")
+        print(start + timedelta(days=28)  )
+        days_between(start+timedelta(days = 28),today)
     if (today - start).days < 0:
         return None
-    return abs((today - start).days)
+    return (today - start).days
 
 def get_ovulation(startDate):
-    print("**********************")
-    print(startDate)
-
     days = days_between(datetime.strptime(startDate, '%Y-%m-%d').date(),datetime.today().date())
     if days <=16 and days >=12:
         return True
