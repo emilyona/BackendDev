@@ -56,8 +56,6 @@ def delete_patient_by_id(patient_id):
 def ovulating(patient_id):
     patient = Patient.query.filter_by(id=patient_id).first()
     date = patient.last_cycle_date
-    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%q")
-    print(datetime.strptime(date, '%Y-%m-%d').date())
     if dao.get_patient_by_id(patient_id) is None or date is None:
         return failure_response("Patient not found!")
     ov = dao.get_ovulation(date)
