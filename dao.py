@@ -46,8 +46,8 @@ def days_between(start, today):
 def get_ovulation(startDate):
     print("**********************")
     print(startDate)
-    
-    days = days_between(datetime.strptime(startDate, '%m-%d-%Y').date(),datetime.today().date())
+
+    days = days_between(datetime.strptime(startDate, '%Y-%m-%d').date(),datetime.today().date())
     if days <=16 and days >=12:
         return True
     return False
