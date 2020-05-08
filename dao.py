@@ -37,14 +37,17 @@ def update_cycle_by_id(patient_id, cycle_time):
     return patient.serialize()
 
 def days_between(start, today):
-    if abs((today - start).days)>=28:
+    if (today - start).days>=28:
         days_between(start+28,today)
-    if abs((today - start).days) < 0:
+    if (today - start).days < 0:
         return None
     return abs((today - start).days)
 
 def get_ovulation(startDate):
-    days = days_between(startDate, datetime.today().date())
+    print("**********************")
+    print(startDate)
+    
+    days = days_between(datetime.strptime(startDate, '%m-%d-%Y').date(),datetime.today().date())
     if days <=16 and days >=12:
         return True
     return False
