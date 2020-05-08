@@ -117,6 +117,18 @@ Response
         }
     }
     
+## Get Ovulation
+```
+GET /api/patients/{id}/cycle/
+```
+    
+Response
+
+    {
+        "success": true,
+        "data": {<RESPONSE>}
+    }
+
 
 ## Get all nurses
 ```
