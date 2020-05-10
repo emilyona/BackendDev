@@ -17,7 +17,7 @@ with app.app_context():
 
 @app.route("/")
 def hello_world():
-    return "Hello world!"
+    return "Welcome to our Backend Development project!"
 
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
