@@ -17,7 +17,7 @@ with app.app_context():
 
 @app.route("/")
 def hello_world():
-    return "Welcome to our Backend Development project!"
+    return "Welcome to our Backend Development project!!"
 
 def success_response(data, code=200):
     return json.dumps({"success": True, "data": data}), code
@@ -54,23 +54,37 @@ def delete_patient_by_id(patient_id):
 
 @app.route("/api/patients/<int:patient_id>/cycle/", methods=['GET'])
 def ovulating(patient_id):
-    patient = Patient.query.filter_by(id=patient_id).first()
-    date = patient.last_cycle_date
+    patient = dao.get_patient_by_id(patient_id)
+    if patient is None:
+        return failure_response("that patient does not exist!")
+    try:
+        date = patient.last_cycle_date
+    except Exception as e:
+        return failure_response("that is not a valid date.")
+
     if dao.get_patient_by_id(patient_id) is None or date is None:
         return failure_response("Patient not found!")
-    ov = dao.get_ovulation(date)
-    if ov is True:
-        return success_response("you are ovulating!")
-    return success_response("you are not ovulating!")
+
+    try:
+        ov = dao.get_ovulation(date)
+        if ov is True:
+            return success_response("you are ovulating!")
+        return success_response("you are not ovulating!")
+    except Exception as e:
+        return failure_response("that is not a valid date.")
 
 
 @app.route("/api/patients/<int:patient_id>/cycle/", methods=['POST'])
 def update_cycle(patient_id):
+    patient = dao.get_patient_by_id(patient_id)
+    if patient is None:
+        return failure_response("that patient does not exist!")
     body = json.loads(request.data)
     last_cycle = body.get('last_cycle_date')
-    patient = dao.update_cycle_by_id(patient_id,datetime.strptime(last_cycle, '%m-%d-%Y').date())
-    if patient is None:
-        return failure_response("Patient not found!")
+    try:
+        patient = dao.update_cycle_by_id(patient_id,datetime.strptime(last_cycle, '%m-%d-%Y').date())
+    except Exception as e:
+        return failure_response("that is not a valid date.")
     return success_response(patient)
 
 @app.route("/api/nurses/", methods=['GET'])
